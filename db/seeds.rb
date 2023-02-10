@@ -9,7 +9,7 @@
 EDMONTON_LONGITUDE = -113.6571...-113.3513
 EDMONTON_LATTITUDE = 53.4198...53.6467
 
-NUMBER_OF_RANDOM_PLACES = 10
+NUMBER_OF_RANDOM_PLACES = 1000
 
 def create_point_in_edmonton
   prng = Random.new
@@ -30,3 +30,10 @@ Place.create(name: "Made By Marcus - Whyte Ave", description: "The original in E
 NUMBER_OF_RANDOM_PLACES.times do |i|
   Place.create(name: "Random Place #{i}", description: "description of place #{i}", lonlat: create_point_in_edmonton)
 end
+
+Place.all.each do |place|
+  5.times do
+    Rating.new(place: place, stars: rand(1..5)).save
+  end 
+end
+

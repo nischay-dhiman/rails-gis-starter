@@ -4,6 +4,9 @@ class PlacesController < ApplicationController
   # GET /places or /places.json
   def index
     @places = Place.all
+    if(filter_params[:filter] && filter_params[:filter] != "")
+      @places = @places.where("places.name ILIKE ?", "%#{filter_params[:filter]}%")
+    end
   end
 
   # GET /places/1 or /places/1.json
@@ -66,5 +69,9 @@ class PlacesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def place_params
       params.require(:place).permit(:name, :description, :lonlat)
+    end
+
+    def filter_params
+      params.permit(:filter)
     end
 end

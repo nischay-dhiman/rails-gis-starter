@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_27_043231) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_10_050643) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
@@ -21,6 +21,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_27_043231) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.geography "lonlat", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
+    t.float "average_rating", default: 0.0
   end
 
+  create_table "ratings", force: :cascade do |t|
+    t.integer "stars", default: 0
+    t.bigint "place_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["place_id"], name: "index_ratings_on_place_id"
+  end
+
+  add_foreign_key "ratings", "places"
 end
