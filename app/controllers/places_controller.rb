@@ -1,3 +1,5 @@
+# params[:ratings]
+
 class PlacesController < ApplicationController
   before_action :set_place, only: %i[ show edit update destroy ]
 
@@ -6,6 +8,9 @@ class PlacesController < ApplicationController
     @places = Place.all
     if(filter_params[:filter] && filter_params[:filter] != "")
       @places = @places.where("places.name ILIKE ?", "%#{filter_params[:filter]}%")
+    end
+    if(filter_params[:rating] && filter_params[:rating] != "")
+      @places = @places.filter_rating(filter_params[:rating])
     end
   end
 
@@ -72,6 +77,6 @@ class PlacesController < ApplicationController
     end
 
     def filter_params
-      params.permit(:filter)
+      params.permit(:filter, :rating)
     end
 end

@@ -26,10 +26,11 @@ export default props => {
     const [zoom, setZoom] = useState(9);
 
     const [filter, setFilter] = useState('');
+    const [rating, setRating] = useState(0);
 
 
     function fetchData() {
-        fetch(`/places.geojson?filter=${filter}`)
+        fetch(`/places.geojson?filter=${filter}&rating=${rating}`)
             .then((response) => response.json())
             .then((placesData) => 
                 {
@@ -67,7 +68,7 @@ export default props => {
     useEffect(() => {
         if (!map.current?.getSource('places')) return;
         fetchData();
-    }, [filter]);
+    }, [filter, rating]);
 
     useEffect(() => {
         if (!map.current?.getSource('places')) return;
@@ -256,12 +257,22 @@ export default props => {
             <div className="sidebar">
                 Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
             </div>
-            {listPage && <div >
-                    <h3>Search</h3>
-                    <div style={{marginBottom: "10px"}}>
-                        <input value={filter} onChange={(e) => setFilter(e.target.value)} placeholder="Search by Name" />
+            {listPage && (
+                <div>
+                    <div >
+                        <h3>Search</h3>
+                        <div style={{marginBottom: "10px"}}>
+                            <input value={filter} onChange={(e) => setFilter(e.target.value)} placeholder="Search by Name" />
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Ratings</h3>
+                        <div style={{marginBottom: "10px"}}>
+                            <input value={rating} onChange={(e) => setRating(e.target.value)} placeholder="Rating" />
+                        </div>
                     </div>
                 </div>
+                )
             }
             <div>
                 <div>
